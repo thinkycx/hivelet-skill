@@ -43,7 +43,7 @@ hivelet check my-note.md
 
 1. **skill 自检**：`ls ~/.claude/skills/hivelet* ~/.agents/skills/hivelet* 2>/dev/null`；
    没有 -> `git clone https://github.com/thinkycx/hivelet-skill ~/.claude/skills/hivelet-skill`
-   （media-summary 同理：`git clone https://github.com/thinkycx/media-summary ~/.claude/skills/media-summary`）
+   （media-summary 同理：`git clone https://github.com/thinkycx/media-summary-skill ~/.claude/skills/media-summary`）
 2. **初始化**：`hivelet init --base-url <站点>`（config 已存在则跳过；本地脚本路径
    `<skill目录>/scripts/hivelet.py`，可直接 `python3` 调用）
 3. **转写总结**：用 media-summary 转写目标视频 -> 按 styles/video-summary.md 组织笔记
