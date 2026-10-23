@@ -40,7 +40,7 @@ bash $SKILL_DIR/scripts/ai-notes.sh new life "<英文slug>"
 - **英文采访的翻译**：以中文表达为主，专有名词/产品名保留英文（Grok、Optimus、Starship），**避免中英混杂的句子**
 - **原文语录**按 QA 形式组织：问可转述（可加主题标签），答必须是转写原文逐字引用
 - **原视频文字版**同样按 QA 组织：问标注主题，答保留转写原文逐字排版，不删减不改写；仍默认 `<details markdown="1">` 折叠
-- **标题↔视频联动（可选）**：每个 Q 小节标题**正下方**（问句行之前）加视频跳转 chip：`<a class="video-seek" data-t="<秒>">▶ MM:SS</a>`——时间戳从 whisper 转写日志（含 `[MM:SS --> ...]` 时间轴的输出）定位到该问句起点；点击由 video-float.js 重写 iframe src 的 `t` 参数实现跳转（跨域 iframe 唯一可靠方式），桌面端自动播放并进入悬浮跟踪状态；移动端浏览器（iOS Safari/Chrome 全系 WebKit）拦截一切重载后 iframe 的自动播放（连官方 `muted=1` 参数也无效，播放器 play() 带声被拒），video-float.js 自动降级为**定位暂停**（克隆新 iframe + autoplay=0），并弹出"已定位到 MM:SS，点击播放键开始"提示条。**chip 绝不能写进标题本身**（会进 TOC 产生嵌套 `<a>`，链接失效）
+- **标题↔视频联动（必做，2026-10-23 从"可选"升级）**：每个小节标题**正下方**（正文行之前）加视频跳转 chip：`<a class="video-seek" data-t="<秒>">▶ MM:SS</a>`——时间戳从 whisper 转写时间轴（`[MM:SS --> ...]`）定位到该小节起点；没有 chips 的视频总结视为**不完整产物**（用户点击小节无法跳到视频对应位置）。注意：`video-transcribe.sh` 的 txt 输出没有时间轴，需用 `media-summary.sh transcribe --summary`（jsonl 段落数据含 start/end）或从 srt/json 输出取时间戳。点击由 video-float.js 重写 iframe src 的 `t` 参数实现跳转（跨域 iframe 唯一可靠方式），桌面端自动播放并进入悬浮跟踪状态；移动端浏览器（iOS Safari/Chrome 全系 WebKit）拦截一切重载后 iframe 的自动播放（连官方 `muted=1` 参数也无效，播放器 play() 带声被拒），video-float.js 自动降级为**定位暂停**（克隆新 iframe + autoplay=0），并弹出"已定位到 MM:SS，点击播放键开始"提示条。**chip 绝不能写进标题本身**（会进 TOC 产生嵌套 `<a>`，链接失效）
 
 ## 模板
 
