@@ -136,14 +136,17 @@ def cmd_login(args) -> int:
         if not token:
             die(1, "token 为空")
     else:
+        import sys as _sys
         for path, tip in [("/register", "没有账号：注册（用户名+密码）"),
                           ("/settings/tokens", "登录后生成 API Token 并复制")]:
             url = base + path
             print(f"{tip}\n  {url}")
-        try:
-            subprocess.Popen(["open", url])  # macOS；Linux 可换 xdg-open
-        except OSError:
-            pass
+        # 自动开浏览器仅限交互 TTY（agent/CI 环境打印 URL 即可，不弹窗）
+        if _sys.stdout.isatty():
+            try:
+                subprocess.Popen(["open", url])  # macOS；Linux 可换 xdg-open
+            except OSError:
+                pass
         token = getpass.getpass("粘贴 token（输入隐藏）: ").strip()
         if not token:
             die(1, "token 为空")
@@ -364,10 +367,13 @@ def cmd_push(args) -> int:
     asset_part = f"，蜜源 asset {resp['asset_id']}" if resp.get("asset_id") else "，独立笔记"
     print(f"✓ push 成功：note {new_note_id}（rev {resp['revision_no']}）{asset_part}")
     print(url)
-    try:
-        subprocess.Popen(["open", url])
-    except OSError:
-        pass
+    # 自动开浏览器仅限交互 TTY（agent/CI 环境不弹窗；--no-open 显式关闭）
+    import sys as _sys
+    if _sys.stdout.isatty() and not getattr(args, "no_open", False):
+        try:
+            subprocess.Popen(["open", url])   # macOS；Linux 可换 xdg-open
+        except OSError:
+            pass
     return 0
 
 
@@ -652,6 +658,7 @@ def main() -> int:
     p_push.add_argument("--visibility", choices=["public", "private"], default=None)
     p_push.add_argument("--asset-id", type=int, default=None,
                         help="直连已有蜜源（asset id；指定时不做 URL 提取，服务端 asset/asset_id 互斥）")
+    p_push.add_argument("--no-open", action="store_true", help="成功后不自动打开浏览器（默认仅 TTY 交互时开）")
     p_push.set_defaults(func=cmd_push)
 
     p_check = sub.add_parser("check", help="本地校验笔记格式（不 push）")
