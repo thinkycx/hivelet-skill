@@ -41,9 +41,10 @@ hivelet check my-note.md
 
 蜜源详情页「一键贡献」按钮复制一段编排 prompt 给 agent，agent 按此流程执行：
 
-1. **skill 自检**：`ls ~/.claude/skills/hivelet* ~/.agents/skills/hivelet* 2>/dev/null`；
+1. **skill 自检**：`ls ~/.claude/skills/hivelet-skill ~/.claude/skills/media-summary 2>/dev/null`；
    没有 -> `git clone https://github.com/thinkycx/hivelet-skill ~/.claude/skills/hivelet-skill`
-   （media-summary 同理：`git clone https://github.com/thinkycx/media-summary-skill ~/.claude/skills/media-summary`）
+   `git clone https://github.com/thinkycx/media-summary-skill ~/.claude/skills/media-summary`
+   （注意目录名统一用不带 -skill 后缀的短名，clone 后 mv 或 `git clone <url> <目标名>`）
 2. **初始化**：`hivelet init --base-url <站点>`（config 已存在则跳过；本地脚本路径
    `<skill目录>/scripts/hivelet.py`，可直接 `python3` 调用）
 3. **转写总结**：用 media-summary 转写目标视频 -> 按 styles/video-summary.md 组织笔记
